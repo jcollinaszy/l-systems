@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Lindenmayer Systems</title>
+		
+		<meta name="description" content="Lindenmayer Systems">
+		<meta name="keywords" content="l-systems, lindenmayer, cellular automata">
+		<meta name="author" content="Juraj Collinaszy">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+		
+		<script type="application/javascript" src="lsystems.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div class="container">
+			<div class="row main-rows">
+				<div class="col">
+					<div class="card w-100 card-color">
+						<div class="card-body" style="height:570px;">
+							<canvas id="canvas" width="540" height="540"></canvas>
+						</div>
+
+					</div>
+					<div class="card w-100 card-color" style="margin-top: 15px;">
+						<div class="card-body"> 
+							<div class="row controls">
+								<div class="card gen-card" style="width: 300px;">
+									<div class="card-body gen-body">
+										<div class="form-group row">
+											<label class="col-5 col-form-label">Iteration</label>
+											<i class="fa fa-minus-circle" aria-hidden="true"></i>
+											
+											<div class="col-4">
+											
+												<input class="form-control" type="number" value="0" id="iteration">
+											</div>
+											<i class="fa fa-plus-circle" aria-hidden="true"></i>
+										</div>
+									</div>
+								</div>
+								<div class="card control-button animated">
+									<div id="generate" class="card-body main-buttons">
+										<a>Generate</a>
+									</div>
+								</div>
+								<div class="card control-button animated">
+									<div id="animate" class="card-body main-buttons">
+										<a>Animate</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col pattern-picker">
+					<div class="card w-100 card-color">
+						<div class="card-body"> 
+							<div class="card w-100">
+								<div class="card-body"> 
+									<center>
+										<h5>L-system settings</h5>
+									</center>	
+									<form>
+										<div class="form-group row">
+										  <label class="col-2 col-form-label">Angle</label>
+										  <div class="col-3">
+											<input class="form-control" type="number" value="60" id="angle">
+										  </div>
+										  <label class="col-4 col-form-label">Starting Angle</label>
+										  <div class="col-3">
+											<input class="form-control" type="number" value="0" id="startingAngle">
+										  </div>
+										</div>
+										<div class="form-group row">
+										  <label class="col-2 col-form-label">Axiom</label>
+										  <div class="col-10">
+											<input class="form-control" type="text" value="F" id="axiom">
+										  </div>
+										</div>
+										<div class="form-group row">
+											<label class="col-2 col-form-label">Rules</label>
+											<div class="col-10">
+												<textarea style="resize:none" class="form-control" id="rules" rows="3">F -> F+F--F+F</textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-2 col-form-label">Result</label>
+											<div class="col-10">
+												<textarea readonly style="resize:none" class="form-control disabled" id="output" rows="5"></textarea>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card w-100 card-color" style="margin-top: 15px;height: 183px;">
+						<div class="card-body"> 
+							<ul class="nav nav-tabs" id="myTab" role="tablist">
+								<h5>Presets</h5>
+								<li class="nav-item ml-auto">
+									<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Fractals 1</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Fractals 2</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="profile-tab1" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1" aria-selected="false">Plants</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="profile-tab2" data-toggle="tab" href="#profile2" role="tab" aria-controls="profile2" aria-selected="false">Others</a>
+								</li>
+								
+							</ul>
+							<div class="tab-content" id="myTabContent">
+								<div class="tab-pane show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+									<div class="row preset-pane">
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Koch Snowflake" name="Koch Snowflake">
+											<img src="img/koch_snowflake.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Sierpinski Triangle" name="Sierpinski Triangle">
+											<img src="img/sierpinski_triangle.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Koch Island" name="Koch Island">
+											<img src="img/koch_island.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Gosper Curve" name="Gosper Curve">
+											<img src="img/gosper_curve.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Hilbert Curve" name="Hilbert Curve">
+											<img src="img/hilbert_curve.jpg">
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+									<div class="row preset-pane">
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Peano Curve" name="Peano Curve">
+											<img src="img/peano_curve.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Dragon Curve" name="Dragon Curve">
+											<img src="img/dragon_curve.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Krishna Anklets" name="Krishna Anklets">
+											<img src="img/krishna_anklets.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Koch Curve" name="Koch Curve">
+											<img src="img/koch_curve.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Islands and Lakes" name="Islands and Lakes">
+											<img src="img/islands_and_lakes.jpg">
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="profile1" role="tabpanel" aria-labelledby="profile-tab1">
+									<div class="row preset-pane">
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Plant 1" name="Plant 1">
+											<img src="img/plant_1.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Plant 2" name="Plant 2">
+											<img src="img/plant_2.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Plant 3" name="Plant 3">
+											<img src="img/plant_3.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Plant 4" name="Plant 4">
+											<img src="img/plant_4.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Plant 5" name="Plant 5">
+											<img src="img/plant_5.jpg">
+										</div>
+									</div>
+								</div>
+								<div class="tab-pane fade" id="profile2" role="tabpanel" aria-labelledby="profile-tab2">
+									<div class="row preset-pane">
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Stochastic Plant 1" name="Stochastic Plant 1">
+											<img src="img/stochastic_plant_1.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Stochastic Plant 2" name="Stochastic Plant 2">
+											<img src="img/stochastic_plant_2.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Random Koch Curve" name="Random Koch Curve">
+											<img src="img/random_koch_curve.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Signal Propagation" name="Signal Propagation">
+											<img src="img/signal_propagation.jpg">
+										</div>
+										<div class="preset" data-toggle="tooltip" data-placement="top" title="Row of Trees" name="Row of Trees">
+											<img src="img/row_of_trees.jpg">
+										</div>
+									</div>
+								
+								</div>
+							</div>		
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	<body>
+</html>
